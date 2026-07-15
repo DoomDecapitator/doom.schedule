@@ -1,0 +1,170 @@
+/// Storage: doom.schedule:data — task queues
+dispatch minecraft:storage["doom.schedule:data"] to struct{
+    /// Pending tasks (FIFO), waiting to be processed
+    queue?: [struct{
+        /// Command string to execute (e.g. "say hi")
+        run: #[command] string,
+        /// Delay value before conversion by unit
+        time: int,
+        /// Time unit: "t"/"s"/"m"/"h"/"d"
+        unit: string,
+        /// Unique task identifier for cancel/pause/resume
+        id: string,
+        /// Absolute game time (ticks) when task should fire
+        exec_time: int,
+        /// Target entity UUID hex string (e.g. "uuid-...")
+        by?: string,
+        /// Dimension string (e.g. "minecraft:overworld")
+        dim?: string,
+        /// Position and rotation at scheduling time
+        posX?: float,
+        posY?: float,
+        posZ?: float,
+        rotX?: float,
+        rotY?: float,
+        /// 1b if target is a player
+        is_player?: byte @ 0..1,
+        /// Remaining retry attempts (schedule_with_retry)
+        retry?: int,
+        /// Delay between retries in ticks
+        retry_delay?: int,
+        /// Set by restore_check when player comes online
+        online?: byte @ 0..1,
+    }],
+    /// Offline tasks (player disconnected)
+    offline?: [struct{
+        run: #[command] string,
+        time: int,
+        unit: string,
+        id: string,
+        exec_time: int,
+        by: string,
+        dim: string,
+        posX: float,
+        posY: float,
+        posZ: float,
+        rotX: float,
+        rotY: float,
+        is_player: byte @ 0..1,
+        retry?: int,
+        retry_delay?: int,
+    }],
+    /// Paused tasks (suspended by user)
+    paused?: [struct{
+        run: #[command] string,
+        time: int,
+        unit: string,
+        id: string,
+        exec_time: int,
+        by?: string,
+        dim?: string,
+        posX?: float,
+        posY?: float,
+        posZ?: float,
+        rotX?: float,
+        rotY?: float,
+        is_player?: byte @ 0..1,
+        retry?: int,
+        retry_delay?: int,
+    }],
+}
+
+/// Storage: doom.schedule:const — read-only constants
+dispatch minecraft:storage["doom.schedule:const"] to struct{
+    /// Time unit definitions [{name, scale}]
+    units: [struct{
+        name: string,
+        scale: int,
+    }],
+    /// 256-element hex lookup table ("00".."ff")
+    hex_chars: [string],
+}
+
+/// Storage: doom.schedule:ctx — runtime context
+dispatch minecraft:storage["doom.schedule:ctx"] to struct{
+    /// Temporary retry parameters (schedule_with_retry)
+    temp_retry?: struct{
+        retry: int,
+        retry_delay: int,
+    },
+    /// Currently processing task (looper)
+    task?: struct{
+        run: #[command] string,
+        time: int,
+        unit: string,
+        id: string,
+        exec_time: int,
+        by?: string,
+        dim?: string,
+        posX?: float,
+        posY?: float,
+        posZ?: float,
+        rotX?: float,
+        rotY?: float,
+        is_player?: byte @ 0..1,
+        retry?: int,
+        retry_delay?: int,
+        online?: byte @ 0..1,
+    },
+    /// Processing stack (current tick tasks)
+    processing?: [struct{
+        run: #[command] string,
+        time: int,
+        unit: string,
+        id: string,
+        exec_time: int,
+        by?: string,
+        dim?: string,
+        posX?: float,
+        posY?: float,
+        posZ?: float,
+        rotX?: float,
+        rotY?: float,
+        is_player?: byte @ 0..1,
+        retry?: int,
+        retry_delay?: int,
+    }],
+    /// Scan buffer for cancel/pause/resume operations
+    scan?: [struct{
+        run?: #[command] string,
+        time?: int,
+        unit?: string,
+        id?: string,
+        exec_time?: int,
+        by?: string,
+        dim?: string,
+        posX?: float,
+        posY?: float,
+        posZ?: float,
+        rotX?: float,
+        rotY?: float,
+        is_player?: byte @ 0..1,
+        retry?: int,
+        retry_delay?: int,
+    }],
+    /// Current item being scanned (cancel/pause/resume)
+    current?: struct{
+        run?: #[command] string,
+        time?: int,
+        unit?: string,
+        id?: string,
+        exec_time?: int,
+        by?: string,
+        dim?: string,
+        posX?: float,
+        posY?: float,
+        posZ?: float,
+        rotX?: float,
+        rotY?: float,
+        is_player?: byte @ 0..1,
+        retry?: int,
+        retry_delay?: int,
+    },
+    /// Unit entry lookup (from const.units)
+    unitEntry?: struct{
+        name: string,
+        scale: int,
+    },
+    /// Any other runtime data
+    [string]: any,
+}
