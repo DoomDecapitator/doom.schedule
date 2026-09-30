@@ -1,0 +1,62 @@
+name: 功能建议
+description: 想要 doom.schedule 多一个能力，或觉得某处行为不对
+title: "[建议] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        先说一句：这个包是**手写 mcfunction**，没有生成器，也没有配置文件。
+        每条建议都会被当成"要不要为它加一个函数"来评估 —— 所以**你到底想拿它做什么**比"加个什么命令"更有用。
+
+  - type: textarea
+    id: scenario
+    attributes:
+      label: 你想解决的实际场景
+      description: 越具体越好（谁触发、隔多久、要对谁生效、失败了你希望怎么办）
+      placeholder: |
+        我要做"玩家下线 30 秒后把它身上的 buff 清掉"，但现在任务进 offline[] 之后会一直冻结，
+        直到玩家回来才执行 —— 我想要一个"离线也算过期"的选项。
+    validations:
+      required: true
+
+  - type: textarea
+    id: workaround
+    attributes:
+      label: 你现在怎么绕过去的
+      description: 有绕法就写，没有就写"没绕过"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: 涉及哪一块
+      options:
+        - 调度核心（schedule / exec_time / 队列）
+        - 离线恢复（offline / restore）
+        - 重试（schedule_with_retry）
+        - 取消 / 暂停恢复
+        - 维度处理
+        - mcdoc 补全 / 编辑器体验
+        - 文档
+        - 其它
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 你希望的命令长什么样（可选）
+      placeholder: |
+        /function doom.schedule:schedule {run:'...',time:30,unit:'s',id:'x',offline_expire:true}
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我看过 README 与 docs/，里面没有已经支持这个能力
+          required: true

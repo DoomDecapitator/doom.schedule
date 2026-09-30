@@ -1,0 +1,26 @@
+# 本地产物 / 编辑器杂物（不进仓库）
+*.log
+*.tmp
+*.bak
+*.bak-*
+node_modules/
+**/node_modules/
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/
+
+# 测试台与服务器运行目录（只在开发仓库）
+harness/
+mcserver/
+mcserver-*/
+**/world/
+**/eula.txt
+**/server.properties
+**/usercache.json
+**/ops.json
+**/whitelist.json
+**/banned-*.json
+**/*.jar
+_work/
+pack/

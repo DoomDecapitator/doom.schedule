@@ -1,0 +1,4 @@
+# 数据包产物按字节比对：一律不做 EOL 转换。
+# 动因：包体里 35 个 mcfunction 用的是 CRLF，而 JSON / mcdoc / Markdown 用的是 LF ——
+# 这是源码的既有状态，必须原样保留，否则 dist/ 的 zip 与仓库本体就不再逐字节相同。
+* -text

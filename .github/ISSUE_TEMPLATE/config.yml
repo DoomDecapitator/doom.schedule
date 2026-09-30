@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 先看文档（安装 / 用法 / 配置 / 排错）
+    url: https://github.com/DoomDecapitator/doom.schedule/blob/main/docs/README.md
+    about: 九成"装不上 / 到点没执行 / 字段写错"的问题在这几页里有答案
+  - name: 已知限制（先对一下，免得白报）
+    url: https://github.com/DoomDecapitator/doom.schedule/blob/main/docs/11-玩家手册.md
+    about: cancel_one 不碰 processing、offline 队列别手写、暂停恢复不重新计时……
+  - name: 版本与兼容（该不该装这个版本）
+    url: https://github.com/DoomDecapitator/doom.schedule/blob/main/docs/13-兼容与版本.md
+    about: pack_format 81 · 目标 1.21.7 / 1.21.8 · 不需要实验性玩法

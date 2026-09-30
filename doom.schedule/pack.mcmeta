@@ -1,0 +1,10 @@
+{
+  "pack": {
+    "pack_format": 81,
+    "description": "doom.schedule — Fusion scheduler",
+    "supported_formats": {
+      "min_inclusive": 48,
+      "max_inclusive": 82
+    }
+  }
+}

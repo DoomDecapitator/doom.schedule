@@ -1,0 +1,115 @@
+name: Bug 报告
+description: 装了 doom.schedule 之后出现异常（到点没执行 / 任务消失 / 报错 / 卡顿）
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        先谢谢你来报问题 🙏 下面这四样（版本、环境、复现步骤、日志）是定位问题的全部线索，
+        缺哪样都可能让排查原地打转。**能让它复现的最小步骤**最值钱。
+
+        报之前顺手看一眼：[已知限制](https://github.com/DoomDecapitator/doom.schedule/blob/main/docs/11-玩家手册.md)
+        和 [安装与卸载](https://github.com/DoomDecapitator/doom.schedule/blob/main/docs/10-安装与卸载.md)。
+
+  - type: input
+    id: pack_version
+    attributes:
+      label: 包版本
+      description: zip 文件名里的版本号
+      placeholder: v2.2
+    validations:
+      required: true
+
+  - type: input
+    id: checksum
+    attributes:
+      label: 校验值核对结果
+      description: 跑过 `sha256sum -c SHA256SUMS.txt`（或 PowerShell 的 Get-FileHash）吗？结果是什么
+      placeholder: OK / 不一致 / 没跑
+    validations:
+      required: true
+
+  - type: input
+    id: mc_version
+    attributes:
+      label: Minecraft 版本与运行方式
+      description: 游戏版本 + 单人存档还是服务器（服务器请写服务端类型，例如 Fabric / Paper / 原版，以及是否装模组）
+      placeholder: 1.21.8 · 单人存档 / 1.21.8 · Fabric 服务器
+    validations:
+      required: true
+
+  - type: dropdown
+    id: howcalled
+    attributes:
+      label: 任务是哪种方式调度的
+      options:
+        - 玩家/命令方块里手动打 function
+        - 别的数据包用 #doom.schedule:schedule 标签调用
+        - 命令方块 / 控制台（没有执行实体）
+        - 不确定
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro_command
+    attributes:
+      label: 你用的那条命令（原样贴）
+      description: 例如 /function doom.schedule:schedule {run:'say hi',time:5,unit:'s',id:'t1'}
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤（最小步骤）
+      placeholder: |
+        1. 1.21.8 单人存档，装 v2.2，/reload
+        2. 打 /function doom.schedule:schedule {run:'say hi',time:5,unit:'s',id:'t1'}
+        3. 等 10 秒，聊天栏什么都没出现
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望什么 / 实际发生了什么
+      placeholder: |
+        期望：5 秒后聊天栏出现 hi
+        实际：没有；/data get storage doom.schedule:data queue 也已经空了
+    validations:
+      required: true
+
+  - type: textarea
+    id: queue
+    attributes:
+      label: 四条队列的现场快照
+      description: 依次跑下面四条，把输出贴进来（尤其任务"凭空消失"的情况）
+      value: |
+        /data get storage doom.schedule:data queue
+        /data get storage doom.schedule:data offline
+        /data get storage doom.schedule:data paused
+        /data get storage doom.schedule:ctx processing
+      render: text
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志片段
+      description: logs/latest.log 里与 doom.schedule 有关的行（尤其 "Failed to load function"、"Unknown"、报错栈）
+      render: text
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我看过"已知限制"，里面没有同样的问题
+          required: false
+        - label: 我贴的日志里没有个人信息（服务器 IP、玩家 UUID、token 等）
+          required: true
