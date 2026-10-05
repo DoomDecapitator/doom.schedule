@@ -1,6 +1,7 @@
 # 文档索引 · doom.schedule
 
-> **想直接装**：去 [`../dist/`](../dist) 下 `doom.schedule-v2.2.zip`，解压后把 `doom.schedule/` 丢进 `datapacks/` → `/reload`。
+> **想直接装**：去 [`../dist/`](../dist) 下 `doom.schedule-v2.3.zip`（1.21.9+），解压后把 `doom.schedule/` 丢进 `datapacks/` → `/reload`。
+> 1.21.5–1.21.8 请用 `legacy` 变体的 `pack.mcmeta`（映射表见 [../README.md](../README.md)）。
 > **想先看代码**：源码就是数据包本体 [`../doom.schedule/`](../doom.schedule) —— 35 个 mcfunction，没有生成器，也没有 `src/`。
 > **想知道每版改了什么**：看 [`../CHANGELOG.md`](../CHANGELOG.md)。
 
@@ -15,7 +16,7 @@
 
 ## 口径说明
 
-- **版本号**：`vX.Y`。当前 `v2.2`。文档里出现版本号的地方，就是那一版的实际行为。
+- **版本号**：`vX.Y`。当前 `v2.3`。文档里出现版本号的地方，就是那一版的实际行为。
 - **"仓库本体"指哪份**：指 [`../doom.schedule/`](../doom.schedule)。它与 [`../dist/`](../dist) 里的 zip **逐字节相同**，
   所以文档不用区分"仓库版"和"下载版"——它们是同一份。
 - **本包没有生成器**：改包 = 直接改 `doom.schedule/data/doom.schedule/function/` 里的 mcfunction。

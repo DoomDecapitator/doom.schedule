@@ -1,8 +1,87 @@
 # 变更日志 · doom.schedule
 
 > 口径：只记**会影响玩家**的改动 —— 改了什么 · 为什么 · 能核对什么。
-> 版本号规则照旧：`vX.Y`（`v2.2` 是当前版）。
-> 目标环境：Minecraft **1.21.7 / 1.21.8**（`pack_format` 81），同时声明 `supported_formats` 48–82。
+> 版本号规则照旧：`vX.Y`（`v2.3` 是当前版）。
+> 目标环境：Minecraft **1.21.5 – 26.3**（多版本，按变体分两份下发）。
+
+---
+
+## v2.3 · 多版本支持（1.21.5 → 26.3）—— 2026-10-05
+
+**下载**：[`dist/doom.schedule-v2.3.zip`](dist/doom.schedule-v2.3.zip) · sha256 `7e054368349d144b7aebc4c39780db125869264f14a09d964fbd5d47ea71a844`
+
+> **这一版只有一件事**：让同一个包在 **1.21.5 一直到 26.3** 都能被加载。
+> **命令层一个字没改** —— 35 个 mcfunction 与 v2.2 逐字节相同，改动**只有 `pack.mcmeta` 一个文件**。
+
+### 一、多版本支持表（MC 版本 → 用哪份）
+
+从 1.21.9 起，MC 改了数据包元数据规则：**必须声明 `min_format`/`max_format`**，
+且与 `supported_formats` **范围必须逐值一致**，否则**整包被拒收**。
+老版本（≤1.21.8）**不认**这两个新字段。所以同一个 mcmeta 无法同时满足两侧 ⇒ **必须拆两份**。
+
+| MC 版本 | data pack format | 用哪份 | `pack.mcmeta` 形态 |
+|---|---|---|---|
+| **1.21.5** | 71 | `legacy-1.21.5-1.21.8` | `sf 48–82` + `min [48,0]` + `max 82` + `pack_format 81` |
+| 1.21.6 | 80 | `legacy-1.21.5-1.21.8` | 同上 |
+| 1.21.7 / 1.21.8 | 81 | `legacy-1.21.5-1.21.8` | 同上 |
+| **1.21.9 / 1.21.10** | 88.0 | `modern-1.21.9-26.3` ★ | `sf 48–121` + `min [48,0]` + `max 121` + `pack_format 81` |
+| 1.21.11 | 94.1 | `modern-1.21.9-26.3` ★ | 同上 |
+| 26.1 / 26.1.1 / 26.1.2 | 101.1 | `modern-1.21.9-26.3` ★ | 同上 |
+| 26.2 | 107.1 | `modern-1.21.9-26.3` ★ | 同上 |
+| **26.3** | 121.0 | `modern-1.21.9-26.3` ★ | 同上 |
+| 1.21.4 及更低 | ≤ 61 | ❌ 不支持 | — |
+
+> **`dist/doom.schedule-v2.3.zip` 里放的是 `modern-1.21.9-26.3`（主用变体）** ——
+> 它覆盖了**最新、也是以后最常用**的那一段。1.21.5–1.21.8 请改用 `legacy-1.21.5-1.21.8` 的 `pack.mcmeta`
+> （命令层与主用变体**逐字节相同**，只是元数据形态不同）。
+
+### 二、本轮修了什么（硬破坏）
+
+1. **`pack.mcmeta` 缺 `min_format`/`max_format`** —— 1.21.9 起**直接拒收**：
+   ```
+   [Server thread/ERROR]: Couldn't load file/doom.schedule pack metadata:
+     Pack declares support for version newer than 81, but is missing mandatory fields min_format and max_format
+   ```
+2. **`supported_formats` 与 `min_format` 范围不一致** —— 同样拒收：
+   ```
+   Pack version declaration mismatch between supported_formats (from 48) and min_format (81.0)
+   ```
+   ⇒ 修法：把 `supported_formats` 的上下界与 `min_format`/`max_format` **对齐到同一组值**。
+
+> ⚠️ **注意格式号的粒度**：1.21.11 是 **94.1**（不是 94.0），26.2 是 **107.1**。
+> 本包 `max_format: 121` 写作单整数，按"主版本 121"解释，已实测覆盖 26.3 ✓。
+
+### 三、真机验收证据
+
+三台实测，**全部 32/32 断言通过、`/reload` 0 错误**：
+
+| 版本 | 用哪份变体 | 套件 | 判定 |
+|---|---|---|---|
+| **1.21.5** | `legacy-1.21.5-1.21.8` | 32 条（8 个 case + 3 个 E2E） | ✅ **32/32 · reload 0 错误** |
+| **1.21.10** | `modern-1.21.9-26.3` | 同上（**同一套件**，可横向比较 ✓） | ✅ **32/32 · reload 0 错误** |
+| **26.3** | `modern-1.21.9-26.3` | 同上 | ✅ **32/32 · reload 0 错误** |
+
+原始读数（三台一致）：
+```
+#total  = 32      #pass = 32      #fail = 0
+#fired  = 1       ← E2E-1：5t 任务到期【真的触发】
+#c1ret  = 1       ← cancel_one 返回值 1
+#caret  = 3       ← cancel_all 返回值 3
+#cahits = 0       ← E2E-3：3 条全取消、【0 次触发】
+```
+版本回执：1.21.10 `data = 4556` · 26.3 `pack_data = 121.0`（与 `max_format: 121` **精确对应** ✓）。
+
+**产物哈希绑定**：1.21.5 实测装入的那一份，`pack.mcmeta` sha256 = `3e9b3701…f92bdb`、
+整包（45 文件）sha256 = `4eb6d877…3116a1`，与登记值一致 ✓ —— 证明跑的就是登记的那一个包。
+
+> **未单独起服的版本**：1.21.9（与 1.21.10 **同为格式 88.0、mcmeta 规则完全一致**，由 1.21.10 覆盖）、
+> 1.21.6/7/8/11、26.1/26.1.1/26.1.2/26.2（按"同格式区间 + 无破坏性变更"外推）。
+
+### 四、能核对什么
+
+- `dist/doom.schedule-v2.3.zip` 内 **45 个条目**与仓库 [`doom.schedule/`](doom.schedule) 下同名文件**逐字节相同**（0 差异）。
+- 仓库 `doom.schedule/` 与 v2.2 相比，**只有 `pack.mcmeta` 一个文件不同**（其余 44 个逐字节相同）——
+  即"**命令层零改动**"。v2.2 的对外接口（`{run,time,unit,id}` 四参 + `cancel_one`/`cancel_all` 的 `id`）**一字未改** ✓。
 
 ---
 

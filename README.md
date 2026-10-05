@@ -1,7 +1,7 @@
 # doom.schedule — 原版数据包任务调度器
 
 [![最新版本](https://img.shields.io/github/v/release/DoomDecapitator/doom.schedule?label=%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC)](https://github.com/DoomDecapitator/doom.schedule/releases)
-[![Minecraft](https://img.shields.io/badge/Minecraft-1.21.7%20%2F%201.21.8-3C8527)](docs/13-兼容与版本.md)
+[![Minecraft](https://img.shields.io/badge/Minecraft-1.21.5%20%E2%80%93%2026.3-3C8527)](docs/13-兼容与版本.md)
 [![许可](https://img.shields.io/badge/%E8%AE%B8%E5%8F%AF-MIT-97ca00)](LICENSE)
 
 <!-- 首屏效果图位（还没放图）：截一张"三条命令排进队列、到点自己执行"的聊天栏，
@@ -9,7 +9,7 @@
 <!-- <p align="center"><img src="docs/assets/首屏效果.png" width="720" alt="doom.schedule 在存档里跑起来的样子"></p> -->
 
 > **这是什么**：一个**纯数据包**的任务调度框架 —— 持久化队列、执行上下文冻结、玩家离线自动恢复、失败重试、暂停/恢复、UUID 追踪，全部用 mcfunction 写成，**零 Mod、零外部库**。原来 `/schedule` 做不到的那几件事，它一次性补齐。
-> **下哪个**：只有**一个**成品 —— [`dist/doom.schedule-v2.2.zip`](dist/doom.schedule-v2.2.zip)。没有变体，不用挑。
+> **下哪个**：见下面「**MC 版本 → 用哪份变体**」—— 1.21.9 起用 [`dist/doom.schedule-v2.3.zip`](dist/doom.schedule-v2.3.zip)；1.21.5–1.21.8 用 `legacy` 变体（见映射表）。
 > **怎么装**：解压 zip → 得到 `doom.schedule/` 文件夹 → 整个丢进 `saves/<存档>/datapacks/`（服务器：`world/datapacks/`）→ 进游戏 `/reload`。就这三步。
 > **源码在哪**：**这个包没有生成器** —— 源码就是 [`doom.schedule/`](doom.schedule) 里那 35 个 mcfunction 本体，点开就能逐个读；zip 里的文件与它**逐字节相同**（见下）。
 > **怎么验**：下载后对一下 sha256，见下面「校验下载的文件」。
@@ -18,7 +18,7 @@
 
 | 步 | 做什么 |
 |---|---|
-| ① | 下载 [`dist/doom.schedule-v2.2.zip`](dist/doom.schedule-v2.2.zip)，顺手对一下 [SHA256SUMS.txt](dist/SHA256SUMS.txt) |
+| ① | 下载 [`dist/doom.schedule-v2.3.zip`](dist/doom.schedule-v2.3.zip)（1.21.9+；1.21.5–1.21.8 见「MC 版本 → 用哪份变体」），顺手对一下 [SHA256SUMS.txt](dist/SHA256SUMS.txt) |
 | ② | 解压，把 `doom.schedule/` 整个放进 `<存档>/datapacks/`；服务器放 `world/datapacks/` |
 | ③ | 进世界 `/reload`，然后 `/function doom.schedule:__help__` 看聊天栏里的命令清单 |
 
@@ -38,14 +38,14 @@
 
 ```
 Linux / macOS:        sha256sum -c SHA256SUMS.txt
-Windows PowerShell:   (Get-FileHash doom.schedule-v2.2.zip -Algorithm SHA256).Hash
+Windows PowerShell:   (Get-FileHash doom.schedule-v2.3.zip -Algorithm SHA256).Hash
 ```
 
 输出 `OK`（或哈希与表里那串相等）就是完整下载；不等就别用，重新下。当前值：
 
 | 文件 | sha256 |
 |---|---|
-| `doom.schedule-v2.2.zip` | `44b950445764d710de058f5b54ce49ed32c90919cd682cd9fafe9ead7d418482` |
+| `doom.schedule-v2.3.zip` | `7e054368349d144b7aebc4c39780db125869264f14a09d964fbd5d47ea71a844` |
 
 GitHub 在每个 Release 附件右侧也会显示同一串，可直接对照。
 
@@ -53,7 +53,8 @@ GitHub 在每个 Release 附件右侧也会显示同一串，可直接对照。
 
 | 文件 | 里面是什么 | 适合谁 |
 |---|---|---|
-| **`dist/doom.schedule-v2.2.zip`**（唯一成品） | 完整的 `doom.schedule/` 数据包：35 个 mcfunction + 一组函数标签 + `pack.mcmeta` + 一份 mcdoc 补全定义 | 所有人。没有任何需要额外开启的实验性玩法，也没有第二个变体要挑 |
+| **`dist/doom.schedule-v2.3.zip`**（主用成品 · 1.21.9–26.3） | 完整的 `doom.schedule/` 数据包：35 个 mcfunction + 一组函数标签 + `pack.mcmeta` + 一份 mcdoc 补全定义 | 1.21.9 及更新的版本。命令层与 v2.2 逐字节相同，只是 `pack.mcmeta` 换成新式 |
+| `legacy-1.21.5-1.21.8` 变体（仓库内 [doom.schedule/](doom.schedule)） | 同一套命令，`pack.mcmeta` 用旧式（`sf 48–82`） | **1.21.5 – 1.21.8**。命令层与主用变体**逐字节相同** |
 
 ## 它替你解决了什么问题
 
@@ -73,12 +74,26 @@ GitHub 在每个 Release 附件右侧也会显示同一串，可直接对照。
 
 ## 兼容与版本（速查）
 
-| 你的环境 | 能不能用 |
+### MC 版本 → 用哪份变体
+
+| MC 版本 | data format | 用哪份 | 实测 |
+|---|---|---|---|
+| **1.21.5** | 71 | `legacy-1.21.5-1.21.8` | ✅ 32/32 |
+| 1.21.6 | 80 | `legacy-1.21.5-1.21.8` | 🟡 同区间外推 |
+| 1.21.7 / 1.21.8 | 81 | `legacy-1.21.5-1.21.8` | 🟡 同区间外推 |
+| **1.21.9 / 1.21.10** | 88.0 | `modern-1.21.9-26.3` ★（= `dist/doom.schedule-v2.3.zip`） | ✅ 32/32（1.21.10） |
+| 1.21.11 | 94.1 | `modern-1.21.9-26.3` ★ | 🟡 同区间外推 |
+| 26.1 / 26.1.1 / 26.1.2 | 101.1 | `modern-1.21.9-26.3` ★ | 🟡 同区间外推 |
+| 26.2 | 107.1 | `modern-1.21.9-26.3` ★ | 🟡 同区间外推 |
+| **26.3** | 121.0 | `modern-1.21.9-26.3` ★ | ✅ 32/32 |
+| 1.21.4 及更低 | ≤ 61 | ❌ 不支持 | — |
+
+**为什么必须拆两份**：1.21.9 起 `pack.mcmeta` 强制要求 `min_format`/`max_format`，
+且与 `supported_formats` 范围**必须逐值一致**；而 1.21.5–1.21.8 **不认**这两个字段。
+命令层两份**逐字节相同**，差异只在 `pack.mcmeta`（各 1 个文件）。
+
+| 其他 | 能不能用 |
 |---|---|
-| Minecraft **1.21.7 / 1.21.8**（`pack_format` 81） | ✅ 目标版本 |
-| Minecraft **1.21.6**（`pack_format` 80） | ✅ 在声明的 `supported_formats` 范围内 |
-| 更老的版本 | ⚠️ 包里声明 `supported_formats` 48–82；实际只在 1.21.x 上验证过，更老请自测 |
-| Minecraft **1.21.9+**（`pack_format` 88） | ❌ 版本号超出声明范围，会被判版本不符 |
 | 单人存档 / 服务器 | 都行；服务器放 `world/datapacks/` |
 | 实验性玩法 | **不需要开任何实验性玩法** |
 
@@ -97,7 +112,7 @@ GitHub 在每个 Release 附件右侧也会显示同一串，可直接对照。
 | 成品与其 sha256 | [`dist/`](dist) |
 | 逐版变更 | [`CHANGELOG.md`](CHANGELOG.md) |
 
-**成品即源码**：`dist/doom.schedule-v2.2.zip` 里的每个文件，都与仓库 [`doom.schedule/`](doom.schedule) 下同名文件**逐字节相同**（45/45 一致）—— 也就是说，你从 Releases 下的 zip 和你在网页上点开的 mcfunction 是同一份东西，不存在"仓库里是旧版"的情况。
+**成品即源码**：`dist/doom.schedule-v2.3.zip` 里的每个文件，都与仓库 [`doom.schedule/`](doom.schedule) 下同名文件**逐字节相同**（45/45 一致）—— 也就是说，你从 Releases 下的 zip 和你在网页上点开的 mcfunction 是同一份东西，不存在"仓库里是旧版"的情况。
 
 ## 文档
 
