@@ -1,9 +1,9 @@
 # 文档索引 · doom.schedule
 
-> **想直接装**：去 [`../dist/`](../dist) 下 `doom.schedule-v2.3.1.zip`（1.21.9–26.3），解压后把 `doom.schedule/` 丢进 `datapacks/` → `/reload`。
+> 想直接装：去 [`../dist/`](../dist) 下 `doom.schedule-v2.3.1.zip`（1.21.9–26.3），解压后把 `doom.schedule/` 丢进 `datapacks/`，跑 `/reload`。
 > 1.21.5–1.21.8 请用 `legacy` 变体的 `pack.mcmeta`（映射表见 [../README.md](../README.md)）。
-> **想先看代码**：源码就是数据包本体 [`../doom.schedule/`](../doom.schedule) —— 35 个 mcfunction，没有生成器，也没有 `src/`。
-> **想知道每版改了什么**：看 [`../CHANGELOG.md`](../CHANGELOG.md)。
+> 想先看代码：源码就是数据包本体 [`../doom.schedule/`](../doom.schedule)，35 个 mcfunction，没有生成器，也没有 `src/`。
+> 想知道每版改了什么：看 [`../CHANGELOG.md`](../CHANGELOG.md)。
 
 | 文档 | 讲什么 | 读它的时机 |
 |---|---|---|
@@ -12,19 +12,19 @@
 | [12-配置与自定义维度](12-配置与自定义维度.md) | 时间单位、storage 布局、自定义维度注册、mcdoc 补全 | 要接自己的包 / 要补全 |
 | [13-兼容与版本](13-兼容与版本.md) | `pack_format` 与版本矩阵、升级降级、和其他调度包的对比 | 换版本 / 选包 |
 | [14-致谢与许可](14-致谢与许可.md) | 许可是 MIT、第三方边界、致谢 | 要转发 / 要商用 |
-| [20-架构与实现详解](20-架构与实现详解.md) | 四队列模型、入队流程、`looper_exec` 分流表、维度方案、性能考量 | 想知道"它到底怎么算的" |
+| [20-架构与实现详解](20-架构与实现详解.md) | 四队列模型、入队流程、`looper_exec` 分流表、维度方案、性能考量 | 想知道“它到底怎么算的” |
 
 ## 口径说明
 
-- **版本号**：`vX.Y.Z`。当前 `v2.3.1`。文档里出现版本号的地方，就是那一版的实际行为。
-- **"仓库本体"指哪份**：指 [`../doom.schedule/`](../doom.schedule)。它与 [`../dist/`](../dist) 里的 zip **逐字节相同**，
-  所以文档不用区分"仓库版"和"下载版"——它们是同一份。
-- **本包没有生成器**：改包 = 直接改 `doom.schedule/data/doom.schedule/function/` 里的 mcfunction。
+- 版本号：`vX.Y.Z`。当前 `v2.3.1`。文档里出现版本号的地方，就是那一版的实际行为。
+- “仓库本体”指哪份：指 [`../doom.schedule/`](../doom.schedule)。它与 [`../dist/`](../dist) 里的 zip 逐字节相同，
+  所以文档不用区分“仓库版”和“下载版”，它们是同一份。
+- 本包没有生成器：改包就是直接改 `doom.schedule/data/doom.schedule/function/` 里的 mcfunction。
   改完想让 zip 跟上，就照 [`../doom.schedule/README.md`](../doom.schedule/README.md) 自己重新压一个
-  （**zip 内顶层目录必须是 `doom.schedule/`**）。
-- **仓库里不会有的东西**：测试台、真机验收日志、逐轮报告、构建脚本的中间产物 —— 这些不进玩家向仓库。
+  （zip 内顶层目录必须是 `doom.schedule/`）。
+- 仓库里不会有的东西：测试台、真机验收日志、逐轮报告、构建脚本的中间产物，这些不进玩家向仓库。
 
 ## 遇到问题
 
 先对一下 [13-兼容与版本](13-兼容与版本.md) 里的版本矩阵和 [11-玩家手册](11-玩家手册.md) 末尾的「已知限制」，
-再去仓库的 Issues 报 —— 那里有表单，会问你要版本、复现步骤和日志。
+再去仓库的 Issues 报。那里有表单，会问你要版本、复现步骤和日志。
