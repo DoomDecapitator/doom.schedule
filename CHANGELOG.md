@@ -15,7 +15,7 @@
   · sha256 `0ba3105b9429f630f075a12d6b327c932d29a5664ba9398490798e5645586612`
 
 > 这一版只有一件事：让同一个包在 1.21.5 一直到 26.3 都能被加载。
-> 命令层一个字没改：35 个 mcfunction 与 v2.2 逐字节相同，改动只有 `pack.mcmeta` 一个文件。
+> 命令层一个字没改：36 个 mcfunction 与 v2.2 逐字节相同，改动只有 `pack.mcmeta` 一个文件。
 
 ### 一、多版本支持表（MC 版本 → 用哪份）
 
@@ -121,7 +121,7 @@
 - 顶层重排为 README.md · LICENSE · CHANGELOG.md · dist/ · docs/ · doom.schedule/ · .github/：
   第一屏直接回答“这是什么 / 下哪个 / 怎么装 / 源码在哪”。
 - 数据包本体从 `doom.schedule.v2/doom.schedule/` 上提到顶层 `doom.schedule/`，
-  和 zip 内的顶层目录同名，点开仓库就能逐个浏览 35 个 mcfunction。
+  和 zip 内的顶层目录同名，点开仓库就能逐个浏览 36 个 mcfunction。
 - `FEATURE.md`（那篇功能长文）移进 [`docs/20-架构与实现详解.md`](docs/20-架构与实现详解.md)，
   正文一字未改，只加了一行来源说明。
 - 新增 `docs/`：安装与卸载 / 玩家手册 / 配置与自定义维度 / 兼容与版本 / 致谢与许可。

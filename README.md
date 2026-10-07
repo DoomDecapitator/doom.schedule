@@ -11,7 +11,7 @@
 > 一个纯数据包的任务调度框架，全部用 mcfunction 写成，零 Mod、零外部库。持久化队列、执行上下文冻结、玩家离线自动恢复、失败重试、暂停/恢复、UUID 追踪，它都自带。原版 `/schedule` 做不到的那几件事，它一次补齐。
 > 下哪个：见下面「MC 版本 → 用哪份变体」。1.21.9–26.3 用 [`dist/doom.schedule-v2.3.1.zip`](dist/doom.schedule-v2.3.1.zip)；1.21.5–1.21.8 用 [`dist/doom.schedule-v2.3.1-mc1.21.5-1.21.8.zip`](dist/doom.schedule-v2.3.1-mc1.21.5-1.21.8.zip)。
 > 怎么装：解压 zip，得到 `doom.schedule/` 文件夹，整个丢进 `saves/<存档>/datapacks/`（服务器：`world/datapacks/`），进游戏跑 `/reload`。就这三步。
-> 源码在哪：这个包没有生成器。源码就是 [`doom.schedule/`](doom.schedule) 里那 35 个 mcfunction 本体，点开就能逐个读。zip 里的文件与它逐字节相同（见下）。
+> 源码在哪：这个包没有生成器。源码就是 [`doom.schedule/`](doom.schedule) 里那 36 个 mcfunction 本体，点开就能逐个读。zip 里的文件与它逐字节相同（见下）。
 > 怎么验：下载后对一下 sha256，见下面「校验下载的文件」。
 
 ## 30 秒：下载 → 装 → 跑起来
@@ -47,14 +47,19 @@ Windows PowerShell:   (Get-FileHash doom.schedule-v2.3.1.zip -Algorithm SHA256).
 |---|---|
 | `doom.schedule-v2.3.1.zip`（1.21.9–26.3） | `66e52def3e11a47edcbb3ad2ce1f9e2a1c293403e69b706cedade55db8bf7bf3` |
 | `doom.schedule-v2.3.1-mc1.21.5-1.21.8.zip`（1.21.5–1.21.8） | `0ba3105b9429f630f075a12d6b327c932d29a5664ba9398490798e5645586612` |
+| `doom.schedule-v2.2.zip`（旧版，已被取代） | `44b950445764d710de058f5b54ce49ed32c90919cd682cd9fafe9ead7d418482` |
 
 GitHub 在每个 Release 附件右侧也会显示同一串，可直接对照。
+
+> `doom.schedule-v2.2.zip` 是历史版本，留下来给需要回退的人。**它已被 v2.3.1 取代**，
+> 新装请用上面那两个。它的 `pack.mcmeta` 声明 `supported_formats 48–82`，下界写到了 48，
+> 而这份包的命令只在 1.21.5（格式 71）以上测过。v2.3.1 已把区间收紧到实测边界。
 
 ## 我该下载哪个
 
 | 文件 | 里面是什么 | 适合谁 |
 |---|---|---|
-| `dist/doom.schedule-v2.3.1.zip`（主用成品 · 1.21.9–26.3） | 完整的 `doom.schedule/` 数据包：35 个 mcfunction + 一组函数标签 + `pack.mcmeta` + 一份 mcdoc 补全定义 | 1.21.9 及更新的版本。命令层与 v2.2 逐字节相同，只是 `pack.mcmeta` 换成新式 |
+| `dist/doom.schedule-v2.3.1.zip`（主用成品 · 1.21.9–26.3） | 完整的 `doom.schedule/` 数据包：36 个 mcfunction + 一组函数标签 + `pack.mcmeta` + 一份 mcdoc 补全定义 | 1.21.9 及更新的版本。命令层与 v2.2 逐字节相同，只是 `pack.mcmeta` 换成新式 |
 | `dist/doom.schedule-v2.3.1-mc1.21.5-1.21.8.zip`（1.21.5–1.21.8） | 同一套命令，`pack.mcmeta` 用旧式（`sf 71–81`） | 1.21.5 – 1.21.8。命令层与主用变体逐字节相同 |
 
 ## 它替你解决了什么问题
@@ -110,7 +115,7 @@ GitHub 在每个 Release 附件右侧也会显示同一串，可直接对照。
 
 | 你想看 | 去哪 |
 |---|---|
-| 每个函数的实现 | [`doom.schedule/data/doom.schedule/function/`](doom.schedule/data/doom.schedule/function)，35 个 `.mcfunction`，文件名就是它们干的事 |
+| 每个函数的实现 | [`doom.schedule/data/doom.schedule/function/`](doom.schedule/data/doom.schedule/function)，36 个 `.mcfunction`，文件名就是它们干的事 |
 | 函数清单与调用关系 | [`doom.schedule/README.md`](doom.schedule/README.md)（包内自带的文件结构表） |
 | 函数标签（`load` / `tick` / 可注册的自定义维度） | [`doom.schedule/data/doom.schedule/tags/function/`](doom.schedule/data/doom.schedule/tags/function) |
 | storage 结构定义（Spyglass / Misode mcdoc 补全） | [`doom.schedule/mcdoc/doom.schedule.mcdoc`](doom.schedule/mcdoc/doom.schedule.mcdoc) |

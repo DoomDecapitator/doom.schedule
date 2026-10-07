@@ -2,7 +2,7 @@
 
 > 想直接装：去 [`../dist/`](../dist) 下 `doom.schedule-v2.3.1.zip`（1.21.9–26.3），解压后把 `doom.schedule/` 丢进 `datapacks/`，跑 `/reload`。
 > 1.21.5–1.21.8 请用 `legacy` 变体的 `pack.mcmeta`（映射表见 [../README.md](../README.md)）。
-> 想先看代码：源码就是数据包本体 [`../doom.schedule/`](../doom.schedule)，35 个 mcfunction，没有生成器，也没有 `src/`。
+> 想先看代码：源码就是数据包本体 [`../doom.schedule/`](../doom.schedule)，36 个 mcfunction，没有生成器，也没有 `src/`。
 > 想知道每版改了什么：看 [`../CHANGELOG.md`](../CHANGELOG.md)。
 
 | 文档 | 讲什么 | 读它的时机 |

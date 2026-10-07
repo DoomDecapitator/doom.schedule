@@ -1,2 +1,3 @@
-66e52def3e11a47edcbb3ad2ce1f9e2a1c293403e69b706cedade55db8bf7bf3  doom.schedule-v2.3.1.zip
+44b950445764d710de058f5b54ce49ed32c90919cd682cd9fafe9ead7d418482  doom.schedule-v2.2.zip
 0ba3105b9429f630f075a12d6b327c932d29a5664ba9398490798e5645586612  doom.schedule-v2.3.1-mc1.21.5-1.21.8.zip
+66e52def3e11a47edcbb3ad2ce1f9e2a1c293403e69b706cedade55db8bf7bf3  doom.schedule-v2.3.1.zip
