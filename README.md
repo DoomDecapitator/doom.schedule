@@ -8,21 +8,30 @@
      存成 docs/图-首屏效果位.md 里说明的位置，再把下面这行注释去掉。在那之前不留半张破图。 -->
 <!-- <p align="center"><img src="docs/assets/首屏效果.png" width="720" alt="doom.schedule 在存档里跑起来的样子"></p> -->
 
-> 一个纯数据包的任务调度框架，全部用 mcfunction 写成，零 Mod、零外部库。持久化队列、执行上下文冻结、玩家离线自动恢复、失败重试、暂停/恢复、UUID 追踪，它都自带。原版 `/schedule` 做不到的那几件事，它一次补齐。
-> 下哪个：见下面「MC 版本 → 用哪份变体」。1.21.9–26.3 用 [`dist/doom.schedule-v2.3.1.zip`](dist/doom.schedule-v2.3.1.zip)；1.21.5–1.21.8 用 [`dist/doom.schedule-v2.3.1-mc1.21.5-1.21.8.zip`](dist/doom.schedule-v2.3.1-mc1.21.5-1.21.8.zip)。
-> 怎么装：解压 zip，得到 `doom.schedule/` 文件夹，整个丢进 `saves/<存档>/datapacks/`（服务器：`world/datapacks/`），进游戏跑 `/reload`。就这三步。
-> 源码在哪：这个包没有生成器。源码就是 [`doom.schedule/`](doom.schedule) 里那 36 个 mcfunction 本体，点开就能逐个读。zip 里的文件与它逐字节相同（见下）。
-> 怎么验：下载后对一下 sha256，见下面「校验下载的文件」。
+一个纯数据包的任务调度框架，全部用 mcfunction 写成。零 Mod，零外部库。
 
-## 30 秒：下载 → 装 → 跑起来
+原版 `/schedule` 只能做一件事：过一会儿跑个函数。它不管是谁下的单，不会在你退出游戏后等着你回来，也没法取消或暂停。
 
-| 步 | 做什么 |
+这个包把这些都补上了：持久化队列、执行上下文冻结、玩家离线自动恢复、失败重试、暂停和恢复、UUID 追踪。
+
+## 下载哪个
+
+| 你的 MC 版本 | 下这个 |
 |---|---|
-| ① | 按「MC 版本 → 用哪份变体」下载对应 zip，顺手对一下 [SHA256SUMS.txt](dist/SHA256SUMS.txt) |
-| ② | 解压，把 `doom.schedule/` 整个放进 `<存档>/datapacks/`；服务器放 `world/datapacks/` |
-| ③ | 进世界 `/reload`，然后 `/function doom.schedule:__help__` 看聊天栏里的命令清单 |
+| 1.21.9 – 26.3 | [`dist/doom.schedule-v2.3.1.zip`](dist/doom.schedule-v2.3.1.zip) |
+| 1.21.5 – 1.21.8 | [`dist/doom.schedule-v2.3.1-mc1.21.5-1.21.8.zip`](dist/doom.schedule-v2.3.1-mc1.21.5-1.21.8.zip) |
 
-三条命令试一下（粘贴进聊天栏或命令方块都行）：
+两份命令层逐字节相同，只有 `pack.mcmeta` 的版本声明不同。
+
+## 安装
+
+1. 解压 zip，得到一个 `doom.schedule/` 文件夹
+2. 整个文件夹放进 `<存档>/datapacks/`。服务器放 `world/datapacks/`
+3. 进游戏跑 `/reload`
+
+装好后跑 `/function doom.schedule:__help__`，聊天栏会列出全部命令。
+
+三条命令先试一下（粘贴进聊天栏或命令方块都行）：
 
 ```
 /function doom.schedule:schedule {run:'say hello',time:5,unit:'s',id:'hello'}
@@ -30,7 +39,11 @@
 /function doom.schedule:cancel_one {id:'hello'}
 ```
 
-要卸载：删掉 `datapacks/doom.schedule/`，跑 `/reload`。这个包不改原版任何东西，删了就干净了（队列数据留在 `storage doom.schedule:data`，想清干净就先跑 `/function doom.schedule:clear` 再删）。
+## 卸载
+
+删掉 `datapacks/doom.schedule/`，跑 `/reload`。
+
+这个包不改原版任何东西，删了就干净了。队列数据留在 `storage doom.schedule:data` 里，想清干净就先跑 `/function doom.schedule:clear` 再删包。
 
 ## 校验下载的文件
 
@@ -51,9 +64,9 @@ Windows PowerShell:   (Get-FileHash doom.schedule-v2.3.1.zip -Algorithm SHA256).
 
 GitHub 在每个 Release 附件右侧也会显示同一串，可直接对照。
 
-> `doom.schedule-v2.2.zip` 是历史版本，留下来给需要回退的人。**它已被 v2.3.1 取代**，
-> 新装请用上面那两个。它的 `pack.mcmeta` 声明 `supported_formats 48–82`，下界写到了 48，
-> 而这份包的命令只在 1.21.5（格式 71）以上测过。v2.3.1 已把区间收紧到实测边界。
+`doom.schedule-v2.2.zip` 是历史版本，留下来给需要回退的人。它已被 v2.3.1 取代，新装请用上面那两个。
+
+它的 `pack.mcmeta` 声明 `supported_formats 48–82`，下界写到了 48，而这份包的命令只在 1.21.5（格式 71）以上测过。v2.3.1 已经把区间收紧到实测边界。
 
 ## 我该下载哪个
 
@@ -68,12 +81,12 @@ GitHub 在每个 Release 附件右侧也会显示同一串，可直接对照。
 
 | 需求 | 原版 `/schedule` | doom.schedule |
 |---|---|---|
-| 服务端重启后任务还在 | ❌ 全丢 | ✅ 队列存在 `storage`，随存档持久化 |
-| 任务属于哪个玩家/实体 | ❌ 只记函数名 | ✅ 入队时冻结 UUID（4 int → hex，`execute as $(by)` 匹配） |
-| 执行时的位置/朝向/维度 | ❌ 无 | ✅ 入队时冻结 `dim` / `posX..posZ` / `rotX,rotY` |
-| 目标掉线了怎么办 | ❌ 照跑或报错 | ✅ 进 `offline[]` 冻结，玩家上线自动恢复（10/tick） |
-| 执行失败再来一次 | ❌ 失败就是失败 | ✅ `schedule_with_retry`，`retry` + `retry_delay` |
-| 取消 / 暂停 / 恢复 | ❌ 发出去就收不回 | ✅ `cancel_one` / `cancel_all` / `pause` / `resume` |
+| 服务端重启后任务还在 | 全丢 | 队列存在 `storage`，随存档持久化 |
+| 任务属于哪个玩家/实体 | 只记函数名 | 入队时冻结 UUID（4 int → hex，`execute as $(by)` 匹配） |
+| 执行时的位置/朝向/维度 | 无 | 入队时冻结 `dim` / `posX..posZ` / `rotX,rotY` |
+| 目标掉线了怎么办 | 照跑或报错 | 进 `offline[]` 冻结，玩家上线自动恢复（10/tick） |
+| 执行失败再来一次 | 失败就是失败 | `schedule_with_retry`，`retry` + `retry_delay` |
+| 取消 / 暂停 / 恢复 | 发出去就收不回 | `cancel_one` / `cancel_all` / `pause` / `resume` |
 | 外部依赖 | — | 无（不需要 Bookshelf、不需要 gu、不需要任何库） |
 
 细节与设计取舍见 [`docs/20-架构与实现详解.md`](docs/20-架构与实现详解.md)（原文 FEATURE.md）。
@@ -84,23 +97,23 @@ GitHub 在每个 Release 附件右侧也会显示同一串，可直接对照。
 
 | MC 版本 | data format | 用哪份 | 实测 |
 |---|---|---|---|
-| 1.21.5 | 71 | `dist/doom.schedule-v2.3.1-mc1.21.5-1.21.8.zip` | ✅ 32/32 |
-| 1.21.6 | 80 | `...-mc1.21.5-1.21.8.zip` | 🟡 同区间外推 |
-| 1.21.7 / 1.21.8 | 81 | `...-mc1.21.5-1.21.8.zip` | 🟡 同区间外推 |
-| 1.21.9 / 1.21.10 | 88.0 | `dist/doom.schedule-v2.3.1.zip` ★ | ✅ 32/32（1.21.10） |
-| 1.21.11 | 94.1 | `dist/doom.schedule-v2.3.1.zip` ★ | 🟡 同区间外推 |
-| 26.1 / 26.1.1 / 26.1.2 | 101.1 | `dist/doom.schedule-v2.3.1.zip` ★ | 🟡 同区间外推 |
-| 26.2 | 107.1 | `dist/doom.schedule-v2.3.1.zip` ★ | 🟡 同区间外推 |
-| 26.3 | 121.0 | `dist/doom.schedule-v2.3.1.zip` ★ | ✅ 32/32 |
-| 1.21.4 及更低 | ≤ 61 | ❌ 不支持 | — |
+| 1.21.5 | 71 | `dist/doom.schedule-v2.3.1-mc1.21.5-1.21.8.zip` | 32/32 实测通过 |
+| 1.21.6 | 80 | `...-mc1.21.5-1.21.8.zip` | 未单独实测，按同区间外推 |
+| 1.21.7 / 1.21.8 | 81 | `...-mc1.21.5-1.21.8.zip` | 未单独实测，按同区间外推 |
+| 1.21.9 / 1.21.10 | 88.0 | `dist/doom.schedule-v2.3.1.zip` | 32/32 实测通过（1.21.10） |
+| 1.21.11 | 94.1 | `dist/doom.schedule-v2.3.1.zip` | 未单独实测，按同区间外推 |
+| 26.1 / 26.1.1 / 26.1.2 | 101.1 | `dist/doom.schedule-v2.3.1.zip` | 未单独实测，按同区间外推 |
+| 26.2 | 107.1 | `dist/doom.schedule-v2.3.1.zip` | 未单独实测，按同区间外推 |
+| 26.3 | 121.0 | `dist/doom.schedule-v2.3.1.zip` | 32/32 实测通过 |
+| 1.21.4 及更低 | ≤ 61 | 不支持 | — |
 
 为什么必须拆两份：1.21.9 起 `pack.mcmeta` 强制要求 `min_format`/`max_format`，
 且要和 `supported_formats` 范围逐值一致；而 1.21.5–1.21.8 不认这两个字段。
 命令层两份逐字节相同，差异只在 `pack.mcmeta`（各 1 个文件）。
 
-> 自称区间和实测覆盖区间对得上（M6）：两份 mcmeta 都已收紧到各自的真实边界。
-> `v2.3.1` 声明 88.0–121.0（1.21.9–26.3，纯新式），`...-mc1.21.5-1.21.8` 声明 71–81（1.21.5–1.21.8）。
-> 其余两份变体源码树在 [`variants/`](variants/)。
+自称区间和实测覆盖区间对得上。两份 `pack.mcmeta` 都已收紧到各自的真实边界：`v2.3.1` 声明 88.0–121.0（1.21.9–26.3，纯新式），`...-mc1.21.5-1.21.8` 声明 71–81（1.21.5–1.21.8）。
+
+其余两份变体的源码树在 [`variants/`](variants/)。
 
 | 其他 | 能不能用 |
 |---|---|
