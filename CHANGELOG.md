@@ -1,4 +1,5 @@
 # 变更日志 · doom.schedule
+English: `CHANGELOG.en.md`
 
 > 口径：只记会影响玩家的改动，改了什么 · 为什么 · 能核对什么。
 > 版本号规则照旧：`vX.Y.Z`（`v2.3.1` 是当前版）。

@@ -1,4 +1,5 @@
 # 文档索引 · doom.schedule
+English: `docs/README.en.md`
 
 > 想直接装：去 [`../dist/`](../dist) 下 `doom.schedule-v2.3.1.zip`（1.21.9–26.3），解压后把 `doom.schedule/` 丢进 `datapacks/`，跑 `/reload`。
 > 1.21.5–1.21.8 请用 `legacy` 变体的 `pack.mcmeta`（映射表见 [../README.md](../README.md)）。
