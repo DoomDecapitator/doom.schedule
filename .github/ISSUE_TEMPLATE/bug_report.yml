@@ -9,8 +9,8 @@ body:
         先谢谢你来报问题 🙏 下面这四样（版本、环境、复现步骤、日志）是定位问题的全部线索，
         缺哪样都可能让排查原地打转。**能让它复现的最小步骤**最值钱。
 
-        报之前顺手看一眼：[已知限制](https://github.com/DoomDecapitator/doom.schedule/blob/main/docs/11-玩家手册.md)
-        和 [安装与卸载](https://github.com/DoomDecapitator/doom.schedule/blob/main/docs/10-安装与卸载.md)。
+        报之前顺手看一眼：[已知限制](https://github.com/Doom-Flare/doom.schedule/blob/main/docs/11-玩家手册.md)
+        和 [安装与卸载](https://github.com/Doom-Flare/doom.schedule/blob/main/docs/10-安装与卸载.md)。
 
   - type: input
     id: pack_version

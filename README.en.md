@@ -2,7 +2,7 @@
 
 中文: `README.md`
 
-[![Latest version](https://img.shields.io/github/v/release/DoomDecapitator/doom.schedule?label=%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC)](https://github.com/DoomDecapitator/doom.schedule/releases)
+[![Latest version](https://img.shields.io/github/v/release/Doom-Flare/doom.schedule?label=%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC)](https://github.com/Doom-Flare/doom.schedule/releases)
 [![Minecraft](https://img.shields.io/badge/Minecraft-1.21.5%20%E2%80%93%2026.3-3C8527)](docs/13-兼容与版本.md)
 [![License](https://img.shields.io/badge/%E8%AE%B8%E5%8F%AF-MIT-97ca00)](LICENSE)
 
